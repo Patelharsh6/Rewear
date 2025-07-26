@@ -1,0 +1,27 @@
+<%- include('../partials/header') %>
+
+<div class="browse-container container">
+    <h1 class="page-main-title">Browse Community Closet</h1>
+    <p class="page-main-subtitle">Find your next favorite piece and give it a new home.</p>
+
+    <div class="items-grid">
+        <% if (items.length > 0) { %>
+            <% items.forEach(item => { %>
+                <a href="/items/<%= item._id %>" class="item-card-link">
+                    <div class="item-card">
+                        <img src="<%= item.images[0].url %>" alt="<%= item.title %>" class="item-image">
+                        <div class="item-info">
+                            <h4 class="item-title"><%= item.title %></h4>
+                            <p class="item-size-condition"><%= item.size %> | <%= item.condition %></p>
+                            <span class="item-price">₹<%= item.price %></span>
+                        </div>
+                    </div>
+                </a>
+            <% }) %>
+        <% } else { %>
+            <p class="no-items-message" style="grid-column: 1 / -1; text-align: center;">No items have been listed yet. Be the first!</p>
+        <% } %>
+    </div>
+</div>
+
+<%- include('../partials/footer') %>

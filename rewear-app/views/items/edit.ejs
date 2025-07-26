@@ -1,0 +1,82 @@
+<%- include('../partials/header') %>
+
+<div class="form-container container">
+    <h1 class="form-page-title">Edit Your Item</h1>
+    <p class="form-page-subtitle">Update the details for your listing.</p>
+
+    <form action="/items/<%= item._id %>" method="POST" enctype="multipart/form-data" class="item-form edit-item-form">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" value="<%= item.title %>" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="5" required><%= item.description %></textarea>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" name="category" required>
+                    <option value="Tops" <%= item.category === 'Tops' ? 'selected' : '' %>>Tops</option>
+                    <option value="Bottoms" <%= item.category === 'Bottoms' ? 'selected' : '' %>>Bottoms</option>
+                    <option value="Dresses" <%= item.category === 'Dresses' ? 'selected' : '' %>>Dresses</option>
+                    <option value="Outerwear" <%= item.category === 'Outerwear' ? 'selected' : '' %>>Outerwear</option>
+                    <option value="Accessories" <%= item.category === 'Accessories' ? 'selected' : '' %>>Accessories</option>
+                    <option value="Shoes" <%= item.category === 'Shoes' ? 'selected' : '' %>>Shoes</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="condition">Condition</label>
+                <select id="condition" name="condition" required>
+                    <option value="New with tags" <%= item.condition === 'New with tags' ? 'selected' : '' %>>New with tags</option>
+                    <option value="Excellent" <%= item.condition === 'Excellent' ? 'selected' : '' %>>Excellent</option>
+                    <option value="Good" <%= item.condition === 'Good' ? 'selected' : '' %>>Good</option>
+                    <option value="Fair" <%= item.condition === 'Fair' ? 'selected' : '' %>>Fair</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="size">Size</label>
+                <input type="text" id="size" name="size" value="<%= item.size %>" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price (₹)</label>
+                <input type="number" id="price" name="price" value="<%= item.price %>" min="0" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Location</label>
+            <div class="location-grid" data-state="<%= item.location.state %>" data-city="<%= item.location.city %>" data-area="<%= item.location.area %>">
+                <select id="state-select" name="state" required></select>
+                <select id="city-select" name="city" required></select>
+                <select id="area-select" name="area" required></select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Manage Images (up to 8)</label>
+            <div class="image-upload-container">
+                <div class="image-preview-grid" id="image-preview-grid">
+                    <% item.images.forEach(image => { %>
+                        <div class="image-preview-item" data-public-id="<%= image.public_id %>">
+                            <img src="<%= image.url %>" alt="Existing image">
+                            <button type="button" class="remove-image-btn" data-filename="<%= image.public_id %>">&times;</button>
+                        </div>
+                    <% }) %>
+                </div>
+                <button type="button" id="add-image-btn" class="add-image-btn">+</button>
+            </div>
+            <input type="file" id="image-upload-input" name="images" accept="image/png, image/jpeg, image/webp" multiple style="display: none;">
+            <input type="hidden" name="imagesToDelete" id="images-to-delete">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReWear - Community Clothing Exchange</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body data-user-id="<%= user ? user.id : '' %>">
+    <header class="main-header">
+        <nav class="navbar container">
+            <a href="/" class="nav-logo">ReWear</a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="/items" class="nav-link">Browse</a></li>
+                <li class="nav-item"><a href="/items/new" class="nav-link">List an Item</a></li>
+
+                <% if (user) { %>
+                    <li class="nav-item"><a href="/dashboard" class="nav-link">Dashboard</a></li>
+                    <li class="nav-item nav-icon">
+                        <a href="/chat" class="nav-link" aria-label="Chat" id="chat-nav-link">
+                            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+                            <% if (locals.unreadChatCount && unreadChatCount > 0) { %>
+                                <span class="notification-dot"></span>
+                            <% } %>
+                        </a>
+                    </li>
+                    <li class="nav-item nav-icon">
+                        <a href="/cart" class="nav-link" aria-label="Cart">
+                             <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.9 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                        </a>
+                    </li>
+                    <%# The logout button has been removed from here %>
+                <% } else { %>
+                    <li class="nav-item"><a href="/login" class="nav-link auth-link">Login</a></li>
+                    <li class="nav-item"><a href="/signup" class="nav-link auth-link-special">Sign Up</a></li>
+                <% } %>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="container main-content-wrapper">
+            <%- include('./messages') %>
+        </div>

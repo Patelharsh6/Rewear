@@ -1,0 +1,39 @@
+<%- include('partials/header') %>
+
+<div class="auth-container">
+    <div class="auth-card">
+        <h1 class="auth-title">Join ReWear</h1>
+        <p class="auth-subtitle">Create an account to start swapping and saving clothes.</p>
+        <form action="/signup" method="POST" class="auth-form" id="signup-form">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                <!-- Password validation checklist -->
+                <div id="password-validation" class="password-validation-rules">
+                    <div class="validation-rule" id="length-rule">Minimum 8 characters</div>
+                    <div class="validation-rule" id="uppercase-rule">At least one uppercase letter</div>
+                    <div class="validation-rule" id="lowercase-rule">At least one lowercase letter</div>
+                    <div class="validation-rule" id="number-rule">At least one number</div>
+                    <div class="validation-rule" id="special-rule">At least one special character</div>
+                </div>
+            </div>
+             <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirmPassword" required>
+                <div id="confirm-password-message" class="validation-rule"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Create Account</button>
+        </form>
+        <p class="auth-switch">Already have an account? <a href="/login">Login</a></p>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

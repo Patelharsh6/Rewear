@@ -1,0 +1,46 @@
+<%- include('../partials/header') %>
+
+<div class="form-container container">
+    <h1 class="form-page-title">Request Direct Swap</h1>
+    
+    <!-- Item you are requesting -->
+    <div class="swap-request-summary">
+        <p>You are requesting to swap for:</p>
+        <div class="summary-item-card">
+            <img src="<%= requestedItem.images[0].url %>" alt="<%= requestedItem.title %>">
+            <div class="summary-item-info">
+                <h4><%= requestedItem.title %></h4>
+                <p>from @<%= requestedItem.owner.username %></p>
+            </div>
+        </div>
+    </div>
+
+    <form action="/swaps/request/direct/<%= requestedItem._id %>" method="POST" class="swap-offer-form">
+        <div class="form-group">
+            <label for="offeredItemId">Choose an item from your closet to offer:</label>
+            <% if (userItems.length > 0) { %>
+                <div class="item-selection-grid">
+                    <% userItems.forEach(item => { %>
+                        <label class="item-radio-card">
+                            <input type="radio" name="offeredItemId" value="<%= item._id %>" required>
+                            <div class="item-card">
+                                <img src="<%= item.images[0].url %>" alt="<%= item.title %>" class="item-image">
+                                <div class="item-info">
+                                    <h4 class="item-title"><%= item.title %></h4>
+                                </div>
+                            </div>
+                        </label>
+                    <% }) %>
+                </div>
+            <% } else { %>
+                <p>You have no available items to offer in a swap. <a href="/items/new">List an item</a> first!</p>
+            <% } %>
+        </div>
+
+        <% if (userItems.length > 0) { %>
+            <button type="submit" class="btn btn-primary">Send Swap Request</button>
+        <% } %>
+    </form>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,69 @@
+<%- include('../partials/header') %>
+
+<div class="admin-container container">
+    <h1 class="page-main-title">Admin Dashboard</h1>
+    <p class="page-main-subtitle">Content and User Management</p>
+
+    <!-- Items Management Section -->
+    <div class="admin-section">
+        <h2 class="admin-section-title">All Listed Items (<%= items.length %>)</h2>
+        <div class="admin-table-container">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Owner</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% items.forEach(item => { %>
+                        <tr>
+                            <td><img src="<%= item.images[0].url %>" alt="<%= item.title %>" class="table-item-image"></td>
+                            <td><a href="/items/<%= item._id %>"><%= item.title %></a></td>
+                            <td><%= item.owner.username %></td>
+                            <td><span class="status-badge status-<%= item.status %>"><%= item.status %></span></td>
+                            <td>
+                                <form action="/admin/items/<%= item._id %>/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this item permanently?');">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+     <!-- Users Management Section -->
+    <div class="admin-section">
+        <h2 class="admin-section-title">All Users (<%= users.length %>)</h2>
+        <div class="admin-table-container">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Joined</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% users.forEach(user => { %>
+                        <tr>
+                            <td><%= user.username %></td>
+                            <td><%= user.email %></td>
+                            <td><%= user.role %></td>
+                            <td><%= user.createdAt.toDateString() %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<%- include('../partials/footer') %>

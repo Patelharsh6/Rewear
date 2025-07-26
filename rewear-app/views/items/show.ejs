@@ -1,0 +1,161 @@
+<%- include('../partials/header') %>
+
+<div class="item-detail-container container">
+    <div class="item-detail-grid">
+        <!-- Image Gallery -->
+        <div class="item-gallery" id="gallery-container" data-images='<%- JSON.stringify(item.images.map(img => img.url)) %>'>
+            <div class="main-image-container">
+                <a href="#image-modal" id="open-modal-link">
+                    <img src="<%= item.images[0].url %>" alt="<%= item.title %>" id="mainImage" class="main-image">
+                </a>
+                <% if (item.images.length > 1) { %>
+                    <button class="gallery-nav prev" id="prev-image-btn" aria-label="Previous Image">&#10094;</button>
+                    <button class="gallery-nav next" id="next-image-btn" aria-label="Next Image">&#10095;</button>
+                <% } %>
+            </div>
+            <% if (item.images.length > 1) { %>
+                <div class="thumbnail-container">
+                    <% item.images.forEach((image, index) => { %>
+                        <img src="<%= image.url %>" alt="Thumbnail of <%= item.title %>" class="thumbnail-image <%= index === 0 ? 'active' : '' %>" data-index="<%= index %>">
+                    <% }) %>
+                </div>
+            <% } %>
+        </div>
+
+        <!-- Item Information -->
+        <div class="item-details">
+            <div class="item-header">
+                <h1 class="item-detail-title"><%= item.title %></h1>
+                <p class="item-owner">Listed by <a href="#"><%= item.owner.username %></a></p>
+            </div>
+
+            <div class="item-price-value">₹<%= item.price %></div>
+
+            <div class="item-description">
+                <h3>Description</h3>
+                <p><%= item.description %></p>
+            </div>
+
+            <div class="item-meta">
+                <div class="meta-item"><span>Category:</span> <%= item.category %></div>
+                <div class="meta-item"><span>Size:</span> <%= item.size %></div>
+                <div class="meta-item"><span>Condition:</span> <%= item.condition %></div>
+                <div class="meta-item"><span>Location:</span> <%= item.location.city %>, <%= item.location.state %></div>
+            </div>
+
+            <div class="item-actions">
+                <% if (user && user.id.toString() == item.owner._id.toString()) { %>
+                    <a href="/items/<%= item._id %>/edit" class="btn btn-secondary">Edit Item</a>
+                    <form action="/items/<%= item._id %>/delete" method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <button type="submit" class="btn btn-danger">Delete Item</button>
+                    </form>
+                <% } else if (item.status !== 'available') { %>
+                    <p class="item-unavailable-notice">This item is currently unavailable.</p>
+                <% } else if (user) { %>
+                    <a href="/chat/start/<%= item.owner._id %>" class="btn btn-primary">Chat with Seller</a>
+                    <form action="/cart/add/<%= item._id %>" method="POST" class="action-form">
+                        <button type="submit" class="btn btn-secondary">Add to Cart</button>
+                    </form>
+                    <a href="/swaps/request/direct/<%= item._id %>" class="btn btn-secondary">Request Swap</a>
+                <% } else { %>
+                    <p><a href="/login">Login</a> to make a swap or purchase.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Image Modal -->
+<div id="image-modal" class="image-modal">
+    <a href="#" class="modal-close" aria-label="Close image viewer">&times;</a>
+    <img class="modal-content" id="modal-image-content">
+</div>
+
+<!-- Scripts -->
+<script>
+    // --- Advanced Gallery Script ---
+    const galleryContainer = document.getElementById('gallery-container');
+    if (galleryContainer) {
+        const itemImages = JSON.parse(galleryContainer.dataset.images);
+        
+        if (itemImages.length > 1) {
+            const mainImage = document.getElementById('mainImage');
+            const prevBtn = document.getElementById('prev-image-btn');
+            const nextBtn = document.getElementById('next-image-btn');
+            const thumbnails = document.querySelectorAll('.thumbnail-image');
+            
+            let currentIndex = 0;
+            let touchStartX = 0;
+
+            function showImage(index) {
+                mainImage.src = itemImages[index];
+                currentIndex = index;
+                thumbnails.forEach((thumb, i) => {
+                    thumb.classList.toggle('active', i === index);
+                });
+            }
+
+            prevBtn.addEventListener('click', () => {
+                const newIndex = (currentIndex - 1 + itemImages.length) % itemImages.length;
+                showImage(newIndex);
+            });
+
+            nextBtn.addEventListener('click', () => {
+                const newIndex = (currentIndex + 1) % itemImages.length;
+                showImage(newIndex);
+            });
+
+            thumbnails.forEach(thumb => {
+                thumb.addEventListener('click', () => {
+                    showImage(parseInt(thumb.dataset.index));
+                });
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') prevBtn.click();
+                if (e.key === 'ArrowRight') nextBtn.click();
+            });
+            
+            mainImage.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; });
+            mainImage.addEventListener('touchend', (e) => {
+                const touchEndX = e.changedTouches[0].screenX;
+                if (touchStartX - touchEndX > 50) nextBtn.click();
+                if (touchEndX - touchStartX > 50) prevBtn.click();
+            });
+        }
+    }
+
+    // --- Image Modal Script ---
+    const modal = document.getElementById('image-modal');
+    const openModalLink = document.getElementById('open-modal-link');
+    const modalImage = document.getElementById('modal-image-content');
+    const mainImageForModal = document.getElementById('mainImage');
+
+    if (modal && openModalLink && modalImage && mainImageForModal) {
+        openModalLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.style.display = "block";
+            modalImage.src = mainImageForModal.src;
+        });
+
+        const closeModal = () => {
+            modal.style.display = "none";
+        };
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal || e.target.classList.contains('modal-close')) {
+                e.preventDefault();
+                closeModal();
+            }
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape" && modal.style.display === "block") {
+                closeModal();
+            }
+        });
+    }
+</script>
+
+<%- include('../partials/footer') %>
+    

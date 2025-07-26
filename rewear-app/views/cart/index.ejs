@@ -1,0 +1,30 @@
+<%- include('../partials/header') %>
+<div class="page-container container">
+    <h1 class="page-main-title">My Cart</h1>
+    <% if (cartItems.length > 0) { %>
+        <div class="cart-items-container">
+            <% cartItems.forEach(cartItem => { %>
+                <% if (cartItem.item) { %>
+                    <div class="cart-item">
+                        <a href="/items/<%= cartItem.item._id %>" class="cart-item-link-wrapper">
+                            <img src="<%= cartItem.item.images[0].url %>" alt="<%= cartItem.item.title %>" class="cart-item-image">
+                            <div class="cart-item-details">
+                                <h3><%= cartItem.item.title %></h3>
+                                <p>Price: ₹<%= cartItem.item.price %></p>
+                                <p>Seller: <%= cartItem.item.owner.username %></p>
+                            </div>
+                        </a>
+                        <div class="cart-item-actions">
+                            <form action="/cart/remove/<%= cartItem.item._id %>" method="POST">
+                                <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                            </form>
+                        </div>
+                    </div>
+                <% } %>
+            <% }) %>
+        </div>
+    <% } else { %>
+        <p style="text-align: center;">Your cart is empty.</p>
+    <% } %>
+</div>
+<%- include('../partials/footer') %>

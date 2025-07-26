@@ -1,0 +1,136 @@
+<%- include('partials/header') %>
+
+<div class="dashboard-container container">
+    <h1 class="dashboard-title">My Dashboard</h1>
+    <%- include('partials/messages') %>
+
+    <!-- User Profile Section -->
+    <div class="dashboard-card profile-card">
+        <div class="profile-header">
+            <div class="profile-avatar"><span><%= user.username.charAt(0).toUpperCase() %></span></div>
+            <div class="profile-info">
+                <h2 class="profile-username"><%= user.username %></h2>
+                <p class="profile-email"><%= user.email %></p>
+            </div>
+            <a href="/logout" class="btn btn-secondary btn-sm logout-btn">Logout</a>
+        </div>
+        <div class="profile-stats">
+            <div class="stat-item">
+                <span class="stat-value"><%= items.length %></span>
+                <span class="stat-label">Items Listed</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value"><%= user.swapsMade %></span>
+                <span class="stat-label">Swaps Made</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Swaps Section -->
+    <div class="dashboard-section">
+        <h3 class="section-subtitle">Swap Requests</h3>
+        <div class="swaps-grid">
+            <!-- Incoming Requests -->
+            <div class="swap-column">
+                <h4>Incoming</h4>
+                <% if (incomingSwaps.length > 0) { %>
+                    <ul class="swap-list">
+                        <% incomingSwaps.forEach(swap => { %>
+                            <li class="swap-item">
+                                <% if (swap.swapType === 'direct') { %>
+                                    <p><b><%= swap.requester.username %></b> wants to trade their:</p>
+                                    <div class="swap-offer-item">
+                                        <img src="<%= swap.offeredItem.images[0].url %>" alt="<%= swap.offeredItem.title %>">
+                                        <span><%= swap.offeredItem.title %></span>
+                                    </div>
+                                    <p>for your <b><%= swap.requestedItem.title %></b>.</p>
+                                <% } %>
+                                <div class="swap-actions">
+                                    <form action="/swaps/respond/<%= swap._id %>" method="POST" class="swap-form">
+                                        <input type="hidden" name="action" value="accept">
+                                        <button type="submit" class="btn btn-primary btn-sm">Accept</button>
+                                    </form>
+                                    <form action="/swaps/respond/<%= swap._id %>" method="POST" class="swap-form">
+                                        <input type="hidden" name="action" value="reject">
+                                        <button type="submit" class="btn btn-danger btn-sm">Decline</button>
+                                    </form>
+                                </div>
+                            </li>
+                        <% }) %>
+                    </ul>
+                <% } else { %>
+                    <p class="no-swaps-message">No new incoming requests.</p>
+                <% } %>
+            </div>
+            <!-- Outgoing Requests -->
+            <div class="swap-column">
+                <h4>Outgoing</h4>
+                <% if (outgoingSwaps.length > 0) { %>
+                     <ul class="swap-list">
+                        <% outgoingSwaps.forEach(swap => { %>
+                            <li class="swap-item">
+                                <p>You requested to swap for <b><%= swap.requestedItem.title %></b> from <b><%= swap.owner.username %></b>.</p>
+                                <span class="swap-status">Status: Pending</span>
+                            </li>
+                        <% }) %>
+                    </ul>
+                <% } else { %>
+                    <p class="no-swaps-message">No pending outgoing requests.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <!-- Swap History Section -->
+    <div class="dashboard-section">
+        <h3 class="section-subtitle">Swap History</h3>
+        <div class="history-container">
+            <% if (swapHistory.length > 0) { %>
+                <ul class="history-list">
+                    <% swapHistory.forEach(swap => { %>
+                        <li class="history-item status-<%= swap.status %>">
+                            <span class="history-status"><%= swap.status %></span>
+                            <p class="history-details">
+                                Swap between <b><%= swap.requester.username %></b> and <b><%= swap.owner.username %></b> for item: <b><%= swap.requestedItem ? swap.requestedItem.title : '[Deleted Item]' %></b>.
+                            </p>
+                            <span class="history-date"><%= swap.updatedAt.toLocaleDateString() %></span>
+                        </li>
+                    <% }) %>
+                </ul>
+            <% } else { %>
+                <p class="no-swaps-message">You have no past swaps.</p>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- User's Listed Items Section -->
+    <div class="dashboard-section">
+        <div class="section-header">
+             <h3 class="section-subtitle">My Listed Items</h3>
+             <a href="/items/new" class="btn btn-secondary">List New Item</a>
+        </div>
+        <div class="items-grid">
+             <% if (items.length > 0) { %>
+                <% items.forEach(item => { %>
+                    <a href="/items/<%= item._id %>" class="item-card-link">
+                        <div class="item-card">
+                            <img src="<%= item.images[0].url %>" alt="<%= item.title %>" class="item-image">
+                            <div class="item-info">
+                                <h4 class="item-title"><%= item.title %></h4>
+                                <p class="item-size-condition"><%= item.size %> | <%= item.condition %></p>
+                                <span class="item-price">₹<%= item.price %></span>
+                            </div>
+                        </div>
+                    </a>
+                <% }) %>
+            <% } else { %>
+                <div class="item-card-placeholder">
+                    <p>You haven't listed any items yet.</p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,60 @@
+<%- include('../partials/header') %>
+
+<div class="chat-page-wrapper">
+    <div class="chat-container">
+        <!-- Conversations List -->
+        <div class="chat-sidebar">
+            <div class="sidebar-header">
+                <h3>Conversations</h3>
+            </div>
+            <ul class="conversation-list" id="conversation-list">
+                <% if (conversations.length > 0) { %>
+                    <% conversations.forEach(convo => { %>
+                        <% const otherParticipant = convo.participants.find(p => p._id.toString() !== user.id.toString()) %>
+                        <% if (otherParticipant) { %>
+                            <li class="conversation-item" data-conversation-id="<%= convo._id %>" data-receiver-id="<%= otherParticipant._id %>" data-receiver-name="<%= otherParticipant.username %>">
+                                <div class="convo-avatar"><%= otherParticipant.username.charAt(0).toUpperCase() %></div>
+                                <div class="convo-details">
+                                    <span class="convo-username"><%= otherParticipant.username %></span>
+                                    <span class="convo-preview">Click to view messages</span>
+                                </div>
+                                <button class="delete-convo-btn" title="Delete conversation">&times;</button>
+                            </li>
+                        <% } %>
+                    <% }) %>
+                <% } else { %>
+                    <p class="no-conversations">No conversations yet.</p>
+                <% } %>
+            </ul>
+        </div>
+
+        <!-- Active Chat Window -->
+        <div class="chat-window">
+            <div class="chat-header" id="chat-header">
+                <p>Select a conversation to start chatting</p>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="no-chat-selected">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                    <p>Your messages will appear here.</p>
+                </div>
+            </div>
+            <div class="chat-input-area" id="chat-input-area" style="display: none;">
+                <form id="message-form" class="message-form">
+                    <input type="text" id="message-input" placeholder="Type a message..." autocomplete="off">
+                    <button type="submit" aria-label="Send Message">
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<!-- Manually add closing tags and scripts, replacing the footer include -->
+</main>
+<script src="/js/main.js"></script>
+</body>
+</html>

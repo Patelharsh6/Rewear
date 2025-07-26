@@ -1,0 +1,78 @@
+<%- include('partials/header') %>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container hero-content">
+        <h1 class="hero-title">Give Your Wardrobe a Second Life.</h1>
+        <p class="hero-subtitle">Join a community dedicated to sustainable fashion. Swap, share, and refresh your style without the waste.</p>
+        <div class="hero-buttons">
+            <a href="/items" class="btn btn-primary">Start Swapping</a>
+            <a href="/items/new" class="btn btn-secondary">List an Item</a>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="how-it-works-section">
+    <div class="container">
+        <h2 class="section-title">How ReWear Works</h2>
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-icon">1</div>
+                <h3 class="step-title">List Your Clothes</h3>
+                <p class="step-description">Upload photos and details of the clothes you're ready to part with.</p>
+            </div>
+            <div class="step">
+                <div class="step-icon">2</div>
+                <h3 class="step-title">Find New Favorites</h3>
+                <p class="step-description">Browse items from a nationwide closet and find pieces you love.</p>
+            </div>
+            <div class="step">
+                <div class="step-icon">3</div>
+                <h3 class="step-title">Swap Securely</h3>
+                <p class="step-description">Use our direct swap system to trade items with other members.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Latest Items Section -->
+<section class="featured-items-section">
+    <div class="container">
+        <h2 class="section-title">Latest Items</h2>
+        
+        <div class="items-grid" id="items-grid-container">
+            <% if (items && items.length > 0) { %>
+                <% items.forEach(item => { %>
+                    <div class="item-card">
+                        <a href="/items/<%= item._id %>" class="item-card-link-image">
+                            <img src="<%= item.images[0].url %>" alt="<%= item.title %>" class="item-image">
+                        </a>
+                        <div class="item-info">
+                            <h4 class="item-title"><a href="/items/<%= item._id %>"><%= item.title %></a></h4>
+                            <p class="item-uploader">from @<%= item.owner.username %></p>
+                            <span class="item-price">₹<%= item.price %></span>
+                        </div>
+                        <% if (user) { %>
+                            <div class="item-card-actions">
+                                <form action="/cart/add/<%= item._id %>" method="POST" class="action-form">
+                                    <button type="submit" class="btn btn-secondary btn-sm">Add to Cart</button>
+                                </form>
+                            </div>
+                        <% } %>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p style="text-align: center; grid-column: 1 / -1;">No items have been listed yet.</p>
+            <% } %>
+        </div>
+
+        <% if (hasMore) { %>
+            <div class="see-more-container">
+                <button id="see-more-btn" class="btn btn-primary" data-page="2">See More</button>
+            </div>
+        <% } %>
+    </div>
+</section>
+
+<%- include('partials/footer') %>
