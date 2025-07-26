@@ -1,0 +1,56 @@
+<%- include('partials/header') %>
+
+<div class="dashboard-container container">
+    <%# This is the public profile page, not the user's own dashboard %>
+
+    <!-- User Profile Section -->
+    <div class="dashboard-card profile-card">
+        <div class="profile-header">
+            <div class="profile-avatar"><span><%= profileUser.username.charAt(0).toUpperCase() %></span></div>
+            <div class="profile-info">
+                <h2 class="profile-username"><%= profileUser.username %></h2>
+                <p class="profile-email">Member since <%= new Date(profileUser.createdAt).toLocaleDateString() %></p>
+            </div>
+        </div>
+        <div class="profile-stats">
+            <div class="stat-item">
+                <span class="stat-value"><%= items.length %></span>
+                <span class="stat-label">Items Listed</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value"><%= profileUser.swapsMade %></span>
+                <span class="stat-label">Swaps Made</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- User's Listed Items Section -->
+    <div class="dashboard-section">
+        <div class="section-header">
+             <h3 class="section-subtitle"><%= profileUser.username %>'s Closet</h3>
+        </div>
+        <div class="items-grid">
+             <% if (items.length > 0) { %>
+                <% items.forEach(item => { %>
+                    <a href="/items/<%= item._id %>" class="item-card-link">
+                        <div class="item-card">
+                            <img src="<%= item.images[0].url %>" alt="<%= item.title %>" class="item-image">
+                            <div class="item-info">
+                                <h4 class="item-title"><%= item.title %></h4>
+                                <p class="item-size-condition"><%= item.size %> | <%= item.condition %></p>
+                                <span class="item-price">₹<%= item.price %></span>
+                            </div>
+                        </div>
+                    </a>
+                <% }) %>
+            <% } else { %>
+                <div class="item-card-placeholder">
+                    <p>This user hasn't listed any items yet.</p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+</div>
+
+<%- include('partials/footer') %>

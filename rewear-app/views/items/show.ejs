@@ -26,7 +26,7 @@
         <div class="item-details">
             <div class="item-header">
                 <h1 class="item-detail-title"><%= item.title %></h1>
-                <p class="item-owner">Listed by <a href="#"><%= item.owner.username %></a></p>
+                <p class="item-owner">Listed by <a href="/user/<%= item.owner._id %>"><%= item.owner.username %></a></p>
             </div>
 
             <div class="item-price-value">₹<%= item.price %></div>
