@@ -97,7 +97,7 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke!');
 });
 
-// --- Start The Server ---
+// --- Start The Server
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
