@@ -6,8 +6,8 @@
 <img width="1919" height="909" alt="Screenshot 2025-08-19 201534" src="https://github.com/user-attachments/assets/1978102a-e759-4a31-915c-7abc2ab8e86e" />
 <h4>Landing Page</h4>
 <img width="1919" height="909" alt="Screenshot 2025-08-19 200759" src="https://github.com/user-attachments/assets/8bb71456-ac88-41b2-885b-9dff69557f44" />
-<img width="1916" height="911" alt="Screenshot 2025-08-19 200818" src="https://github.com/user-attachments/assets/d7e5f221-00a2-4325-a32c-76381f11a5ef" />
-<img width="1914" height="912" alt="Screenshot 2025-08-19 200852" src="https://github.com/user-attachments/assets/10f5311f-dd44-4268-a4e5-3476a65c753d" />
+<img width="1919" height="811" alt="Screenshot 2025-08-19 205807" src="https://github.com/user-attachments/assets/9b556067-0395-4519-8f0e-a05302a1e9c5" />
+<img width="1919" height="791" alt="Screenshot 2025-08-19 205924" src="https://github.com/user-attachments/assets/58b1845c-41a8-428c-a7ff-657f6bf4ead9" />
 <h4>Item detail page</h4>
 <img width="1917" height="913" alt="Screenshot 2025-08-19 201241" src="https://github.com/user-attachments/assets/70a26520-abac-4390-bf85-23aa2ea54bca" />
 <h4>Chat with Seller page</h4>
