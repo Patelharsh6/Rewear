@@ -1,4 +1,4 @@
-🔄 ReWear – Community Clothing Exchange
+<h2>🔄 ReWear – Community Clothing Exchange</h2>
 
 <img width="1919" height="910" alt="Screenshot 2025-08-19 201443" src="https://github.com/user-attachments/assets/144b0eed-56ab-4014-9776-34ed26415bad" />
 <img width="1919" height="909" alt="Screenshot 2025-08-19 201534" src="https://github.com/user-attachments/assets/1978102a-e759-4a31-915c-7abc2ab8e86e" />
